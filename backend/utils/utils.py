@@ -2,13 +2,13 @@ import torch
 import torchvision.transforms as transforms
 
 def load_embedding_matrix():
-    embedding_matrix = torch.load("assets/embedding_matrix.pt", weights_only = False)
+    embedding_matrix = torch.load("assets/embedding_matrix.pt", map_location=torch.device("cpu"), weights_only=False)
     embedding_matrix = torch.tensor(embedding_matrix, dtype=torch.float)
     return embedding_matrix
 
 def load_i2w_and_w2i():
-    w2i = torch.load("assets/w2i.pt", weights_only=False)
-    i2w = torch.load("assets/i2w.pt", weights_only=False)
+    w2i = torch.load("assets/w2i.pt", map_location=torch.device("cpu"), weights_only=False)
+    i2w = torch.load("assets/i2w.pt", map_location=torch.device("cpu"), weights_only=False)
 
     w2i = {word: idx - 1 for word, idx in w2i.items()}
     i2w = {idx: word for word, idx in w2i.items()}

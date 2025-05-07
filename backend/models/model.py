@@ -4,10 +4,12 @@ import torch
 import torch.nn as nn
 import numpy as np
 from typing import Dict
-from ultils.ultils import *
+from utils.utils import *
 from PIL import Image
+from torchvision.models import VGG16_Weights
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = "cpu"
 i2w, w2i = load_i2w_and_w2i()
 embedding_matrix = load_embedding_matrix()
 
@@ -15,7 +17,8 @@ embedding_matrix = load_embedding_matrix()
 class VGG(nn.Module):
     def __init__(self):
         super(VGG, self).__init__()
-        vgg              = models.vgg16(pretrained=True)
+        weights          = VGG16_Weights.DEFAULT
+        vgg              = models.vgg16(weights=weights)
         self.features    = vgg.features
         self.avgpooling  = vgg.avgpool
         self.flatten     = nn.Flatten()
@@ -53,7 +56,7 @@ class VGGLSTM(nn.Module):
 
 def load_model():
     model = VGGLSTM(input_feature_size=512*7*7, vocab_size=len(w2i), embed_size=200, hidden_size=512)
-    checkpoint = torch.load("assets/MLP.pth")
+    checkpoint = torch.load("assets/MLP.pth", map_location=torch.device("cpu"))
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(device)
     model.eval()

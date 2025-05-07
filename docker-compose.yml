@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  nginx:
+    image: nginx:1.23.3
+    ports:
+      - 3000:80
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html
+  
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8000:8000

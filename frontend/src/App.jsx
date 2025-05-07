@@ -1,5 +1,6 @@
 import React from "react";
 import ImageCaptioning from "./components/imagecaptioning/imagecaptioning";
+import "./App.css"
 
 function App() {
   return (
